@@ -1,0 +1,620 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Technical Notes
+\end_layout
+
+\begin_layout Section
+Dislocation representation
+\end_layout
+
+\begin_layout Standard
+The evolving dislocation configuration consists of a non-empty list of dislocati
+on loops.
+ Each loop is stored as a circular doubly-linked list of 
+\emph on
+segment-node
+\emph default
+ elements.
+ A 
+\emph on
+segment-node
+\emph default
+ element represents both a node and the outgoing linear segment adjacent
+ to that node.
+ Each 
+\emph on
+segment-node
+\emph default
+ element has pointers to the successive and the preceding element, forming
+ the linked list.
+ A 
+\emph on
+segment-node 
+\emph default
+element 
+\begin_inset Formula $i$
+\end_inset
+
+ stores the position 
+\begin_inset Formula $\mathbf{x}_{i}$
+\end_inset
+
+ of the node and the line vector 
+\begin_inset Formula $\mathbf{l}_{i}$
+\end_inset
+
+ of the outgoing segment (pointing to the successive node).
+ Every node is connected to exactly one incoming and one outgoing segment
+ (closed linear chain).
+\end_layout
+
+\begin_layout Standard
+As a special requirement (performance consideration), a dislocation loop
+ must consist of at least two nodes/segments.
+ That means, the initial straight dislocation segment is divided into two
+ segments (even though one would suffice).
+\end_layout
+
+\begin_layout Standard
+Nodal positions and line vectors are both stored as coordinate triplets
+ 
+\begin_inset Formula $(u,v,w)$
+\end_inset
+
+, where 
+\begin_inset Formula $u$
+\end_inset
+
+ and 
+\begin_inset Formula $v$
+\end_inset
+
+ are integers, and 
+\begin_inset Formula $w$
+\end_inset
+
+ is a continuous coordinate along the screw direction (in units of 
+\begin_inset Formula $b$
+\end_inset
+
+).
+ This internal coordinate system is spanned by the three unit vectors
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbf{e}_{u}=\frac{1}{2}\left[\bar{1}1\bar{1}\right]\qquad\mathbf{e}_{v}=\frac{1}{2}\left[11\bar{1}\right]\qquad\mathbf{e}_{w}=\frac{1}{2}\left[111\right]
+\]
+
+\end_inset
+
+An internal vector 
+\begin_inset Formula $(u,v,w)$
+\end_inset
+
+ can be converted to the spatial representation 
+\begin_inset Formula $(x,y,z)$
+\end_inset
+
+ by multiplying it with the transformation matrix
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\begin{pmatrix}x\\
+y\\
+z
+\end{pmatrix}=a\begin{pmatrix}\frac{\sqrt{6}}{3} & \frac{\sqrt{6}}{6} & 0\\
+0 & \frac{\sqrt{2}}{2} & 0\\
+-\frac{\sqrt{3}}{6} & \frac{\sqrt{3}}{6} & \frac{\sqrt{3}}{2}
+\end{pmatrix}\begin{pmatrix}u\\
+v\\
+w
+\end{pmatrix},
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $a$
+\end_inset
+
+ is the bcc lattice parameter.
+ The spatial coordinate system is spanned by the Cartesian unit vectors
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbf{e}_{x}=\frac{1}{\sqrt{6}}\left[\bar{1}2\bar{1}\right]\qquad\mathbf{e}_{y}=\frac{1}{\sqrt{2}}\left[10\bar{1}\right]\qquad\mathbf{e}_{z}=\frac{1}{\sqrt{3}}\left[111\right]
+\]
+
+\end_inset
+
+The Burgers vector 
+\begin_inset Formula $\mathbf{b}$
+\end_inset
+
+ of all dislocations is 
+\begin_inset Formula $(0,0,1)$
+\end_inset
+
+ in internal coordinates, and 
+\begin_inset Formula $(0,0,b)$
+\end_inset
+
+ in spatial coordinates.
+ 
+\end_layout
+
+\begin_layout Standard
+The periodicity length 
+\begin_inset Formula $L\in\mathbb{N}$
+\end_inset
+
+ of the system along the screw direction is specified as an integer multiple
+ of the Burgers vector 
+\begin_inset Formula $b$
+\end_inset
+
+.
+ Nodal positions do not have to lie inside the primary image of the system.
+ That is, whenever a node moves, it is not wrapped back into the simulation
+ cell when it crosses the periodic boundaries.
+ Each dislocation segment stores a line vector 
+\begin_inset Formula $\mathbf{l}_{i}$
+\end_inset
+
+, which connects the two successive nodes 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $(i+1)$
+\end_inset
+
+ of the loop.
+ 
+\begin_inset Formula $\mathbf{l}_{i}$
+\end_inset
+
+ represents the physical extension of the segment (in the internal coordinate
+ system).
+ Since the two nodes of the segment can be located in two different images
+ of the system, 
+\begin_inset Formula $\mathbf{l}_{i}$
+\end_inset
+
+ is only equal to the difference of the two nodal positions plus an integer
+ multiple of the periodicity length:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbf{l}_{i}=\mathbf{x}_{i+1}-\mathbf{x}_{i}+(0,0,nL)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The net dislocation content within the simulation is conserved at all times,
+ i.e.
+\end_layout
+
+\begin_layout Standard
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula 
+\[
+\sum_{i}\mathbf{l}_{i}=(0,0,L).
+\]
+
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+The sum of segment vectors in a single dislocation loop 
+\begin_inset Formula $\mathcal{L}$
+\end_inset
+
+ adheres to
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\sum_{i\in\mathcal{L}}\mathbf{l}_{i}=(0,0,n_{\mathcal{L}}L),
+\]
+
+\end_inset
+
+with an integer 
+\begin_inset Formula $n_{\mathcal{L}}$
+\end_inset
+
+.
+ If 
+\begin_inset Formula $n_{\mathcal{L}}=0$
+\end_inset
+
+, then the dislocation is a finite (debris) loop.
+ If 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $n_{\mathcal{L}}=1$
+\end_inset
+
+, then the dislocation is the infinite (periodic) screw dislocation.
+ The system should contain exactly one dislocation with 
+\begin_inset Formula $n_{\mathcal{L}}=1$
+\end_inset
+
+ at all times, and may contain zero or more debris loops with 
+\begin_inset Formula $n_{\mathcal{L}}=0$
+\end_inset
+
+.
+ To measure the velocity of the dislocation, the center of mass of only
+ the infinite dislocation is computed.
+\end_layout
+
+\begin_layout Section
+Monte Carlo algorithm
+\end_layout
+
+\begin_layout Standard
+One iteration of the Monte Carlo algorithm consist of the following steps:
+\end_layout
+
+\begin_layout Enumerate
+Compute current velocities 
+\begin_inset Formula $\dot{w}_{i}$
+\end_inset
+
+ of dislocation nodes:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+First, compute velocities of existing kink segments (from resolved applied
+ shear stress divided by kink drag coefficient, 
+\begin_inset Formula $\dot{w}=\frac{\dot{z}}{b}=\frac{\tau_{g}}{B}$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Enumerate
+Detect adjacent pairs of kinks with negative relative velocity, 
+\begin_inset Formula $\dot{w}_{i}-\dot{w}_{i+1}<0$
+\end_inset
+
+ (locked cross-kinks); reset velocity of both kinks to zero to prevent the
+ occurrence of reverse screw segments.
+\end_layout
+
+\begin_layout Enumerate
+Transfer kink velocities to adjacent dislocation nodes.
+ Nodes adjacent to two kink segments with different velocity are split into
+ two nodes (connected by a zero-length screw segment).
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Compute minimum free migration time 
+\begin_inset Formula $t^{\mathrm{mig}}$
+\end_inset
+
+ of dislocation nodes (along screw direction).
+ 
+\begin_inset Formula $t^{\mathrm{mig}}$
+\end_inset
+
+ is minimized over all nodes, with the per-node time 
+\begin_inset Formula $t_{i}^{\mathrm{mig}}$
+\end_inset
+
+ given by the smaller of
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+The shortest collision time with another node 
+\begin_inset Formula $j$
+\end_inset
+
+ on the same atomic row (
+\begin_inset Formula $u_{i}=u_{j}$
+\end_inset
+
+, 
+\begin_inset Formula $v{}_{i}=v_{j}$
+\end_inset
+
+): 
+\begin_inset Formula $t_{i}^{\mathrm{col}}=\min_{j}\left(\frac{w_{j}-w_{i}}{\dot{w}_{i}-\dot{w}_{j}}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+The time needed to reach the prescribed maximum travel distance: 
+\begin_inset Formula $t_{i}^{\mathrm{max}}=\frac{\Delta w^{\mathrm{max}}}{\left|\dot{w}_{i}\right|}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Generate list of kMC kink-pair nucleation events and compute their rates.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+A single event is specified by 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The screw segment
+\end_layout
+
+\begin_layout Itemize
+The (starting) position of the kink pair along the screw segment (in units
+ of 
+\begin_inset Formula $b$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+The width of the kink pair (in units of 
+\begin_inset Formula $b$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+The kink direction (index into global list of possible direction vectors)
+\end_layout
+
+\begin_layout Itemize
+The nucleation rate (calculated from the above)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+For each existing screw segment, generate 
+\begin_inset Formula $n_{\mathrm{nuc}}$
+\end_inset
+
+ nucleation events.
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+To generate one event, randomly sample kink directions, kink-pair widths,
+ and kink-pair positions along screw segment.
+\end_layout
+
+\begin_layout Enumerate
+Compute activation energy 
+\begin_inset Formula $\Delta F_{\mathrm{kp}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Compute nucleation rate 
+\begin_inset Formula $j_{\mathrm{kp}}=\nu\exp\left(-\frac{\Delta F_{\mathrm{kp}}}{kT}\right)$
+\end_inset
+
+, with a normalized attempt frequency 
+\begin_inset Formula $\nu=\nu_{0}\frac{l}{n_{\mathrm{nuc}}}$
+\end_inset
+
+.
+ Here, 
+\begin_inset Formula $l$
+\end_inset
+
+ denotes the screw segment's length.
+ 
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Enumerate
+Generate nucleation time from exponential distribution defined by the total
+ nucleation rate: 
+\begin_inset Formula $t^{\mathrm{nuc}}=j_{\mathrm{tot}}\exp\left(-j_{\mathrm{tot}}x\right)$
+\end_inset
+
+, with 
+\begin_inset Formula $j_{\mathrm{tot}}=\sum j_{\mathrm{kp}}$
+\end_inset
+
+ and a random number 
+\begin_inset Formula $x\in[0,1]$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+If 
+\begin_inset Formula $t^{\mathrm{mig}}\leq t^{\mathrm{nuc}}$
+\end_inset
+
+, then all kinks/nodes move with their current velocity for a time 
+\begin_inset Formula $t^{\mathrm{mig}}$
+\end_inset
+
+.
+ The simulation time is incremented 
+\begin_inset Formula $t\leftarrow t+t^{\mathrm{mig}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+If 
+\begin_inset Formula $t^{\mathrm{mig}}>t^{\mathrm{nuc}}$
+\end_inset
+
+, then all kinks/nodes move for a time 
+\begin_inset Formula $t^{\mathrm{nuc}}$
+\end_inset
+
+, and a nucleation event is selected and executed from the catalog using
+ the kMC algorithm.
+ The simulation time is incremented 
+\begin_inset Formula $t\leftarrow t+\frac{1}{j_{\mathrm{tot}}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+The dislocation configuration is updated/purged:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Find kink nodes that are located on top of another (screw) segment.
+ Insert another 2-node into the screw segment here to subdivide it.
+\end_layout
+
+\begin_layout Enumerate
+Remove degenerate screw segments with zero length.
+\end_layout
+
+\begin_layout Enumerate
+Detect 4-nodes, i.e.
+ two 2-nodes at the same location.
+ Use minimum curvature criterion to decide whether the four arms of the
+ 4-node should be flipped.
+ The flipping operation either generates a new dislocation loop or coalesces
+ two loops into one.
+\end_layout
+
+\begin_layout Enumerate
+Again search for degenerate scew segments and delete them.
+\end_layout
+
+\begin_layout Enumerate
+Remove redundent nodes on screw segments, i.e.
+ coalesce two adjacent screw segments into one.
+\end_layout
+
+\begin_layout Enumerate
+Delete degenerate dislocation loops that consist of only two (kink) segments
+ (i.e., which are not an infinite straight dislocation).
+\end_layout
+
+\end_deeper
+\end_body
+\end_document

@@ -1,0 +1,11 @@
+# Data plot from Comp Mat Sci 23, 139 (2002) 
+# 1st column: Applied shear stress (MPa)
+# 2nd column: Critical kink span (b)
+79.6296 13.0137
+157.407 10
+238.889 8.9863
+320.37 8.9863
+398.148 8
+475.926 6.0274
+716.667 4.0274
+957.407 3.0137

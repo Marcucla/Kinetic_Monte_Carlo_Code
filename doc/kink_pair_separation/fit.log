@@ -1,0 +1,47 @@
+
+
+*******************************************************************************
+Fri Mar 28 12:47:57 2014
+
+
+FIT:    data read from 'Fe_data.txt' using ($1/1e3):($2)
+        format = x:z
+	y range restricted to [0.00000 : 1.00000]
+        #datapoints = 8
+        residuals are weighted equally (unit weight)
+
+function used for fitting: kpsep_fit(x)
+fitted parameters initialized with current variable values
+
+
+
+ Iteration 0
+ WSSR        : 297.385           delta(WSSR)/WSSR   : 0
+ delta(WSSR) : 0                 limit for stopping : 1e-05
+ lambda	  : 1.19057
+
+initial set of free parameter values
+
+w0              = 1
+wp              = 1
+
+After 3 iterations the fit converged.
+final sum of squares of residuals : 3.5846
+rel. change during last iteration : -4.3989e-07
+
+degrees of freedom    (FIT_NDF)                        : 6
+rms of residuals      (FIT_STDFIT) = sqrt(WSSR/ndf)    : 0.772938
+variance of residuals (reduced chisquare) = WSSR/ndf   : 0.597434
+
+Final set of parameters            Asymptotic Standard Error
+=======================            ==========================
+
+w0              = 3.95369          +/- 0.3613       (9.137%)
+wp              = 3.31418          +/- 0.4893       (14.77%)
+
+
+correlation matrix of the fit parameters:
+
+               w0     wp     
+w0              1.000 
+wp             -0.830  1.000 

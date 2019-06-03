@@ -1,0 +1,749 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass scrartcl
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip smallskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Inputs
+\end_layout
+
+\begin_layout Standard
+The parameter 
+\begin_inset Formula $s$
+\end_inset
+
+ will be computed from the following inputs:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\boldsymbol{\sigma}$
+\end_inset
+
+ - Local stress tensor.
+ 
+\begin_inset Formula $\boldsymbol{\sigma}$
+\end_inset
+
+ is defined in the global simulation coordinate system.
+ The only significant components are 
+\begin_inset Formula $\sigma_{xz}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma_{yz}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\mathbf{\boldsymbol{b}}=(0,0,b)^{T}$
+\end_inset
+
+ - Burgers vector
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta\in[0,2\pi)$
+\end_inset
+
+ - Angle of kink direction, measured from the positive x-axis of the simulation
+ coordinate system.
+ In the bcc system there are six possible kink directions: 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\theta=\frac{\pi}{3}k\quad(k=0\ldots5)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The unit normal of the kink plane is
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\boldsymbol{n}_{k}=(-\sin\theta,\cos\theta,0)^{T}\label{eq:KinkPlaneNormal}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Schmid law
+\end_layout
+
+\begin_layout Standard
+According to Schmid's law, the RSS for a general plane can be calculated
+ as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\sigma_{\mathrm{RSS}}=\boldsymbol{t}\cdot\boldsymbol{\sigma}\cdot\boldsymbol{n}\label{eq:SchmidLaw}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $ $
+\end_inset
+
+
+\begin_inset Formula $\boldsymbol{t}=\boldsymbol{b}/\left|\boldsymbol{b}\right|=(0,0,1)$
+\end_inset
+
+ and 
+\begin_inset Formula $\boldsymbol{n}$
+\end_inset
+
+ are unit vectors representing the slip direction and slip plane normal.
+ Expanding Eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:SchmidLaw"
+
+\end_inset
+
+ and using Eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:KinkPlaneNormal"
+
+\end_inset
+
+ results in:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $ $
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\sigma_{\mathrm{RSS}}(\theta)=-\sigma_{xz}\sin\theta+\sigma_{yz}\cos\theta\label{eq:RSS_SchmidLaw}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Maximum resolved shear stress (MRSS)
+\end_layout
+
+\begin_layout Standard
+The direction of maximum resolved shear stress is denoted by the angle 
+\begin_inset Formula $\theta_{\mathrm{MRSS}}$
+\end_inset
+
+ and can be computed from the stress tensor components:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\theta_{\mathrm{MRSS}}=\arctan\left(-\frac{\sigma_{xz}}{\sigma_{yz}}\right).\label{eq:Theta_MRSS}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The value of the MRSS can also be computed from the components of the stress
+ tensor as follows:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\sigma_{\mathrm{MRSS}}=\sqrt{\sigma_{xz}^{2}+\sigma_{yz}^{2}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+PROOF: Insert Eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Theta_MRSS"
+
+\end_inset
+
+ into Eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:RSS_SchmidLaw"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\sigma_{\mathrm{MRSS}} & = & \sigma_{\mathrm{RSS}}(\theta_{\mathrm{MRSS}})\\
+ & = & -\sigma_{xz}\sin\left[\arctan\left(-\frac{\sigma_{xz}}{\sigma_{yz}}\right)\right]+\sigma_{yz}\cos\left[\arctan\left(-\frac{\sigma_{xz}}{\sigma_{yz}}\right)\right]\\
+ & = & \sigma_{xz}\cdot\frac{\sigma_{xz}}{\sigma_{yz}}/\sqrt{1+\frac{\sigma_{xz}^{2}}{\sigma_{yz}^{2}}}+\sigma_{yz}/\sqrt{1+\frac{\sigma_{xz}^{2}}{\sigma_{yz}^{2}}}\\
+ & = & \sigma_{xz}^{2}/\sqrt{\sigma_{yz}^{2}+\sigma_{xz}^{2}}+\sigma_{yz}^{2}/\sqrt{\sigma_{yz}^{2}+\sigma_{xz}^{2}}\\
+ & = & \sqrt{\sigma_{xz}^{2}+\sigma_{yz}^{2}}
+\end{eqnarray}
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Critical shear stress
+\end_layout
+
+\begin_layout Standard
+The direction of maximum resolved shear stress, 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\theta_{\mathrm{MRSS}}$
+\end_inset
+
+, and the kink direction, 
+\begin_inset Formula $\theta$
+\end_inset
+
+, form the angle 
+\begin_inset Formula $\chi$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\chi=\theta_{\mathrm{MRSS}}-\theta
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can imagine an experiment in which 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\theta_{\mathrm{MRSS}}$
+\end_inset
+
+ is fixed and
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ 
+\begin_inset Formula $\sigma_{\mathrm{MRSS}}$
+\end_inset
+
+ is incremented in small steps until slip occurs on the kink plane given
+ by 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+ We call this critical value of 
+\begin_inset Formula $\sigma_{\mathrm{MRSS}}$
+\end_inset
+
+ the 
+\family default
+\series default
+\shape default
+\size default
+\emph on
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+Critical Resolved Shear Stress
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+ (CRSS) 
+\begin_inset Formula $\sigma_{c}(\chi).$
+\end_inset
+
+ It depends on the angle 
+\begin_inset Formula $\chi$
+\end_inset
+
+ between the kink plane and the MRSS plane.
+ Furthermore, we can define a parameter
+\begin_inset Formula 
+\begin{equation}
+s(\chi)=\frac{\sigma_{\mathrm{MRSS}}}{\sigma_{c}(\chi)},\label{eq:Definition_s}
+\end{equation}
+
+\end_inset
+
+which measures the fraction of the critical stress reached at current level
+ of stress.
+ The condition 
+\begin_inset Formula $s(\chi)=1$
+\end_inset
+
+ means that the shear stress resolved on the direction 
+\begin_inset Formula $\theta_{\mathrm{MRSS}}=\theta+\chi$
+\end_inset
+
+ reaches the critical level required to let the dislocation move in the
+ glide direction 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The above discussion applies to both Schmid and non-Schmid behavior.
+\end_layout
+
+\begin_layout Section
+Critical stress and the Schmid law
+\end_layout
+
+\begin_layout Standard
+In a material that follows Schmid's law, the CRSS 
+\begin_inset Formula $\sigma_{c}(\chi)$
+\end_inset
+
+ exhibits a 
+\begin_inset Formula $1/\cos\chi$
+\end_inset
+
+ dependence:
+\begin_inset Formula 
+\begin{equation}
+\sigma_{c}(\chi)=\frac{\sigma_{P}}{\cos\chi}\label{eq:CRSS_SchmidLaw}
+\end{equation}
+
+\end_inset
+
+with 
+\begin_inset Formula $\sigma_{P}$
+\end_inset
+
+ being a material constant.
+ We now have to show that this interpretation really corresponds to the
+ classical formulation of Schmid's law (Eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:RSS_SchmidLaw"
+
+\end_inset
+
+).
+ Given that 
+\begin_inset Formula $\sigma_{P}$
+\end_inset
+
+ is the critical resolved stress that must be reached on the glide plane
+ to trigger slip, then the actual resolved shear stress on the glide plane
+ is 
+\begin_inset Formula $\sigma_{\mathrm{RSS}}=s\cdot\sigma_{P}$
+\end_inset
+
+.
+ We begin by inserting Eqs.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Definition_s"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CRSS_SchmidLaw"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\sigma_{\mathrm{RSS}} & = & s(\chi)\cdot\sigma_{P}\\
+ & = & \frac{\sigma_{\mathrm{MRSS}}}{\sigma_{c}(\chi)}\cdot\sigma_{P}\\
+ & = & \frac{\sigma_{\mathrm{MRSS}}}{\sigma_{P}/\cos\chi}\cdot\sigma_{P}\\
+ & = & \sigma_{\mathrm{MRSS}}\cos\chi\label{eq:RSS_recasting}\\
+ & = & \sigma_{\mathrm{MRSS}}\cos(\theta_{\mathrm{MRSS}}-\theta)\\
+ & = & \sigma_{\mathrm{MRSS}}\left[\sin\theta_{\mathrm{MRSS}}\sin\theta+\cos\theta_{\mathrm{MRSS}}\cos\theta\right]\\
+ & = & \underbrace{\sigma_{\mathrm{MRSS}}\sin\theta_{\mathrm{MRSS}}}_{=-\sigma_{xz}}\sin\theta+\underbrace{\sigma_{\mathrm{MRSS}}\cos\theta_{\mathrm{MRSS}}}_{=\sigma_{yz}}\cos\theta\\
+ & = & -\sigma_{xz}\sin\theta+\sigma_{yz}\cos\theta\label{eq:RSS_recasting_end}
+\end{eqnarray}
+
+\end_inset
+
+This is indeed identical to the Schmid law (Eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:RSS_SchmidLaw"
+
+\end_inset
+
+).
+ Note that we have shown the validity of definition (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Definition_s"
+
+\end_inset
+
+) for arbitrary 
+\begin_inset Formula $\theta$
+\end_inset
+
+ (and 
+\begin_inset Formula $\theta_{\mathrm{MRSS}}$
+\end_inset
+
+ or 
+\begin_inset Formula $\chi$
+\end_inset
+
+).
+ 
+\begin_inset Formula $ $
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Implementation of non-Schmid corrections
+\end_layout
+
+\begin_layout Standard
+For materials that exhibit non-Schmid effects, we have to modify the CRSS's
+ dependence on 
+\begin_inset Formula $\chi$
+\end_inset
+
+ given by Eq.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CRSS_SchmidLaw"
+
+\end_inset
+
+.
+ We use the following modified form to account for non-Schmid effects:
+\begin_inset Formula $ $
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\sigma_{c}(\chi)=\sigma_{P}\frac{a_{1}}{\cos\chi+a_{2}\cos(\chi+\frac{\pi}{3})}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Computing the parameter 
+\begin_inset Formula $s$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+s(\theta,\chi) & = & \frac{\sigma_{\mathrm{MRSS}}}{\sigma_{c}(\chi)}\\
+ & = & \sigma_{\mathrm{MRSS}}\frac{\cos\chi+a_{2}\cos(\chi+\frac{\pi}{3})}{\sigma_{P}a_{1}}\\
+ & = & \sqrt{\sigma_{xz}^{2}+\sigma_{yz}^{2}}\frac{\cos\chi+a_{2}\cos(\chi+\frac{\pi}{3})}{\sigma_{P}a_{1}}
+\end{eqnarray}
+
+\end_inset
+
+with 
+\begin_inset Formula $\chi=\theta_{\mathrm{MRSS}}-\theta=\arctan\left(-\frac{\sigma_{xz}}{\sigma_{yz}}\right)-\theta$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We finally show that the normal Schmid behavior can be retained by setting
+ 
+\begin_inset Formula $a_{1}=1,a_{2}=0$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{eqnarray}
+s(\theta,\chi) & = & \sigma_{\mathrm{MRSS}}\frac{\cos\chi+a_{2}\cos(\chi+\frac{\pi}{3})}{\sigma_{P}a_{1}}\\
+ & = & \sigma_{\mathrm{MRSS}}\frac{\cos\chi}{\sigma_{P}}\\
+ & = & \left[-\sigma_{xz}\sin\theta+\sigma_{yz}\cos\theta\right]/\sigma_{P}
+\end{eqnarray}
+
+\end_inset
+
+In the last step we re-used the derivations (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:RSS_recasting"
+
+\end_inset
+
+)-(
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:RSS_recasting_end"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Section
+Numerical test 1
+\end_layout
+
+\begin_layout Standard
+We consider the following scenario: 
+\begin_inset Formula $\theta=0$
+\end_inset
+
+, 
+\begin_inset Formula $\chi=\sigma_{\mathrm{MRSS}}\in[0,2\pi)$
+\end_inset
+
+, 
+\begin_inset Formula $a_{1}=1.32$
+\end_inset
+
+, 
+\begin_inset Formula $a_{2}=0.64$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename nonschmid_plot1.pdf
+	width 50text%
+	clip
+
+\end_inset
+
+
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Plotting 
+\begin_inset Formula $r=1/s(\chi)$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename nonschmid_polar_plot1.pdf
+	width 50page%
+	BoundingBox 0bp 0bp 397bp 386bp
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Numerical test 2
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\theta=-60$
+\end_inset
+
+ degrees:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename nonschmid_plot2.pdf
+	width 50text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
